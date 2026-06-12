@@ -1,8 +1,8 @@
 # SchoolCore 
 
 Sistema acadêmico desenvolvido em **Python**, utilizando **Programação
-Orientada a Objetos**, no contexto do Projeto Integrador SchoolCore
-(semestre 2026.1), referente à disciplina **Programação de Computadores**.
+Orientada a Objetos**, no contexto do Projeto Integrador SchoolCore.
+
 
 ## 1. Objetivo
 
