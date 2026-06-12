@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block titulo %}Painel{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Visão geral</span>
+    <h1>Painel acadêmico</h1>
+    <p>Resumo das informações cadastradas no SchoolCore — atualizado em tempo real a partir dos dados persistidos.</p>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-label">Alunos</span>
+    <div class="stat-value">{{ total_alunos_ativos }} <small>/ {{ total_alunos }} total</small></div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Professores</span>
+    <div class="stat-value">{{ total_professores }}</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Disciplinas</span>
+    <div class="stat-value">{{ total_disciplinas }}</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Turmas</span>
+    <div class="stat-value">{{ total_turmas }}</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Matrículas ativas</span>
+    <div class="stat-value">{{ total_matriculas_ativas }}</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <span class="card__label">Módulo gerencial</span>
+    <h2>Situação acadêmica consolidada</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>Aprovados</td>
+          <td class="text-right"><span class="stamp stamp--aprovado">Aprovado</span></td>
+          <td class="text-right mono">{{ aprovacao.aprovados }}</td>
+        </tr>
+        <tr>
+          <td>Reprovados</td>
+          <td class="text-right"><span class="stamp stamp--reprovado">Reprovado</span></td>
+          <td class="text-right mono">{{ aprovacao.reprovados }}</td>
+        </tr>
+        <tr>
+          <td>Sem dados suficientes</td>
+          <td class="text-right"><span class="stamp stamp--sem-dados">Sem dados</span></td>
+          <td class="text-right mono">{{ aprovacao.sem_dados }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="form-actions">
+      <a href="{{ url_for('relatorios') }}" class="btn btn--ghost btn--small">Ver relatórios completos</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="card__label">Currículo</span>
+    <h2>Disciplinas mais ofertadas</h2>
+    {% if disciplinas_ofertadas %}
+      <table>
+        <thead>
+          <tr><th>Código</th><th class="text-right">Turmas</th></tr>
+        </thead>
+        <tbody>
+          {% for codigo, quantidade in disciplinas_ofertadas %}
+          <tr>
+            <td class="mono">{{ codigo }}</td>
+            <td class="text-right mono">{{ quantidade }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Nenhuma turma cadastrada ainda.</p>
+    {% endif %}
+    <div class="form-actions">
+      <a href="{{ url_for('listar_turmas') }}" class="btn btn--ghost btn--small">Gerenciar turmas</a>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <span class="card__label">Acesso rápido</span>
+  <h2>Atalhos</h2>
+  <div class="btn-group">
+    <a href="{{ url_for('novo_aluno') }}" class="btn btn--small">+ Novo aluno</a>
+    <a href="{{ url_for('novo_professor') }}" class="btn btn--ghost btn--small">+ Novo professor</a>
+    <a href="{{ url_for('nova_disciplina') }}" class="btn btn--ghost btn--small">+ Nova disciplina</a>
+    <a href="{{ url_for('nova_turma') }}" class="btn btn--ghost btn--small">+ Nova turma</a>
+    <a href="{{ url_for('academico') }}" class="btn btn--ghost btn--small">Lançar notas / frequência</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block titulo %}Matrículas{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 06</span>
+    <h1>Matrículas</h1>
+    <p>Vincule alunos a turmas, respeitando o limite de vagas, e acompanhe ou cancele matrículas existentes.</p>
+  </div>
+</div>
+
+<div class="card">
+  <span class="card__label">Nova matrícula</span>
+  <h2>Vincular aluno a uma turma</h2>
+
+  {% if not alunos or not turmas %}
+    <p class="muted">É necessário ter ao menos um aluno ativo e uma turma cadastrada para realizar uma matrícula.</p>
+  {% else %}
+  <form method="post" action="{{ url_for('nova_matricula') }}">
+    <div class="form-grid">
+      <div class="field">
+        <label for="matricula_aluno">Aluno</label>
+        <select id="matricula_aluno" name="matricula_aluno" required>
+          {% for aluno in alunos %}
+            <option value="{{ aluno.matricula }}">{{ aluno.matricula }} — {{ aluno.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="codigo_turma">Turma</label>
+        <select id="codigo_turma" name="codigo_turma" required>
+          {% for turma in turmas %}
+            <option value="{{ turma.codigo }}">
+              {{ turma.codigo }} ({{ nomes_disciplinas.get(turma.disciplina_codigo, turma.disciplina_codigo) }}) —
+              {{ turma.alunos_matriculados | length }}/{{ turma.capacidade }} vagas
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn">Realizar matrícula</button>
+    </div>
+  </form>
+  {% endif %}
+</div>
+
+<div class="card">
+  <span class="card__label">Registros</span>
+  <h2>Todas as matrículas</h2>
+  {% if matriculas %}
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Aluno</th>
+        <th>Turma</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th class="col-actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in matriculas %}
+      <tr>
+        <td class="mono">{{ m.id }}</td>
+        <td>
+          <span class="mono">{{ m.matricula_aluno }}</span>
+          {% if nomes_alunos.get(m.matricula_aluno) %} — {{ nomes_alunos[m.matricula_aluno] }}{% endif %}
+        </td>
+        <td>
+          <span class="mono">{{ m.codigo_turma }}</span>
+          {% set disc = codigo_disciplina_da_turma.get(m.codigo_turma) %}
+          {% if disc and nomes_disciplinas.get(disc) %} — {{ nomes_disciplinas[disc] }}{% endif %}
+        </td>
+        <td class="mono">{{ m.data_matricula }}</td>
+        <td><span class="stamp stamp--{{ m.status }}">{{ m.status }}</span></td>
+        <td class="col-actions">
+          {% if m.esta_ativa() %}
+          <form class="inline" method="post" action="{{ url_for('cancelar_matricula', id_matricula=m.id) }}">
+            <button type="submit" class="btn btn--danger btn--small">Cancelar</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">Nenhuma matrícula registrada ainda.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titulo %}Professores{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 03</span>
+    <h1>Gestão de professores</h1>
+    <p>Cadastro, consulta e atualização do corpo docente, com vínculo às disciplinas lecionadas.</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('novo_professor') }}" class="btn">+ Novo professor</a>
+  </div>
+</div>
+
+{% if professores %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Titulação</th>
+        <th>Área de atuação</th>
+        <th class="text-right">Disciplinas</th>
+        <th class="col-actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for professor in professores %}
+      <tr>
+        <td class="mono">{{ professor.codigo_funcional }}</td>
+        <td>{{ professor.nome }}</td>
+        <td style="text-transform: capitalize">{{ professor.titulacao }}</td>
+        <td>{{ professor.area_atuacao }}</td>
+        <td class="text-right mono">{{ professor.disciplinas_vinculadas | length }}</td>
+        <td class="col-actions">
+          <div class="btn-group" style="justify-content:flex-end">
+            <a href="{{ url_for('detalhe_professor', codigo=professor.codigo_funcional) }}" class="btn btn--ghost btn--small">Ver</a>
+            <a href="{{ url_for('editar_professor', codigo=professor.codigo_funcional) }}" class="btn btn--ghost btn--small">Editar</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card">
+  <div class="empty-state">
+    <span class="glyph">—</span>
+    <strong>Nenhum professor cadastrado ainda.</strong>
+    <p>Cadastre o primeiro professor para começar a vincular disciplinas e turmas.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

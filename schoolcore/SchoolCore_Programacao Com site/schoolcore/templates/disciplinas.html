@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titulo %}Disciplinas{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 04</span>
+    <h1>Gestão de disciplinas</h1>
+    <p>Cadastro do currículo acadêmico, com carga horária, período e professor responsável.</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('nova_disciplina') }}" class="btn">+ Nova disciplina</a>
+  </div>
+</div>
+
+{% if disciplinas %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th class="text-right">Carga horária</th>
+        <th class="text-right">Período</th>
+        <th>Professor responsável</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for disciplina in disciplinas %}
+      <tr>
+        <td class="mono">{{ disciplina.codigo }}</td>
+        <td>{{ disciplina.nome }}</td>
+        <td class="text-right mono">{{ disciplina.carga_horaria }}h</td>
+        <td class="text-right mono">{{ disciplina.periodo }}</td>
+        <td>
+          <form class="inline-form" method="post" action="{{ url_for('vincular_professor', codigo=disciplina.codigo) }}">
+            <select name="professor_responsavel">
+              <option value="">— sem professor —</option>
+              {% for codigo_funcional, nome in nomes_professores.items() %}
+                <option value="{{ codigo_funcional }}" {{ 'selected' if disciplina.professor_responsavel == codigo_funcional }}>
+                  {{ codigo_funcional }} — {{ nome }}
+                </option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn--ghost btn--small">Vincular</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card">
+  <div class="empty-state">
+    <span class="glyph">—</span>
+    <strong>Nenhuma disciplina cadastrada ainda.</strong>
+    <p>Cadastre a primeira disciplina do currículo acadêmico.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

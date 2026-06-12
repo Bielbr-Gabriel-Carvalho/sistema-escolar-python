@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block titulo %}Alunos{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 02</span>
+    <h1>Gestão de alunos</h1>
+    <p>Cadastro, consulta, edição e inativação dos registros acadêmicos dos alunos.</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('novo_aluno') }}" class="btn">+ Novo aluno</a>
+  </div>
+</div>
+
+<div class="chip-row">
+  <a href="{{ url_for('listar_alunos') }}" class="chip {{ 'active' if filtro == 'todos' }}">Todos</a>
+  <a href="{{ url_for('listar_alunos', status='ativo') }}" class="chip {{ 'active' if filtro == 'ativo' }}">Ativos</a>
+  <a href="{{ url_for('listar_alunos', status='trancado') }}" class="chip {{ 'active' if filtro == 'trancado' }}">Trancados</a>
+  <a href="{{ url_for('listar_alunos', status='formado') }}" class="chip {{ 'active' if filtro == 'formado' }}">Formados</a>
+  <a href="{{ url_for('listar_alunos', status='inativo') }}" class="chip {{ 'active' if filtro == 'inativo' }}">Inativos</a>
+</div>
+
+{% if alunos %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Matrícula</th>
+        <th>Nome</th>
+        <th>Curso</th>
+        <th>Período</th>
+        <th>Status</th>
+        <th class="col-actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for aluno in alunos %}
+      <tr>
+        <td class="mono">{{ aluno.matricula }}</td>
+        <td>{{ aluno.nome }}</td>
+        <td>{{ aluno.curso }}</td>
+        <td>{{ aluno.periodo }}</td>
+        <td><span class="stamp stamp--{{ aluno.status_academico }}">{{ aluno.status_academico }}</span></td>
+        <td class="col-actions">
+          <div class="btn-group" style="justify-content:flex-end">
+            <a href="{{ url_for('detalhe_aluno', matricula=aluno.matricula) }}" class="btn btn--ghost btn--small">Ver</a>
+            <a href="{{ url_for('editar_aluno', matricula=aluno.matricula) }}" class="btn btn--ghost btn--small">Editar</a>
+            {% if aluno.status_academico != 'inativo' %}
+            <form class="inline" method="post" action="{{ url_for('inativar_aluno', matricula=aluno.matricula) }}">
+              <button type="submit" class="btn btn--danger btn--small">Inativar</button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card">
+  <div class="empty-state">
+    <span class="glyph">—</span>
+    <strong>Nenhum aluno encontrado para este filtro.</strong>
+    <p>Cadastre um novo aluno ou selecione outro status acima.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

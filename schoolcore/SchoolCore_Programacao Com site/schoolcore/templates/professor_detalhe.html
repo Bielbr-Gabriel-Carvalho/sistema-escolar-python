@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titulo %}{{ professor.nome }}{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 03 · Ficha do professor</span>
+    <h1>{{ professor.nome }}</h1>
+    <p>Código funcional <span class="mono">{{ professor.codigo_funcional }}</span> · {{ professor.area_atuacao }}</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('editar_professor', codigo=professor.codigo_funcional) }}" class="btn btn--ghost">Editar</a>
+    <a href="{{ url_for('listar_professores') }}" class="btn btn--ghost">Voltar</a>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <span class="card__label">Dados cadastrais</span>
+    <h2>Identificação</h2>
+    <table>
+      <tbody>
+        <tr><td class="muted">CPF</td><td class="mono">{{ professor.cpf }}</td></tr>
+        <tr><td class="muted">E-mail</td><td>{{ professor.email or '—' }}</td></tr>
+        <tr><td class="muted">Titulação</td><td style="text-transform: capitalize">{{ professor.titulacao }}</td></tr>
+        <tr><td class="muted">Área de atuação</td><td>{{ professor.area_atuacao }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="card__label">Módulo de disciplinas</span>
+    <h2>Disciplinas vinculadas</h2>
+    {% if disciplinas %}
+      <table>
+        <thead>
+          <tr><th>Código</th><th>Nome</th><th class="text-right">CH</th></tr>
+        </thead>
+        <tbody>
+          {% for disciplina in disciplinas %}
+          <tr>
+            <td class="mono">{{ disciplina.codigo }}</td>
+            <td>{{ disciplina.nome }}</td>
+            <td class="text-right mono">{{ disciplina.carga_horaria }}h</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Nenhuma disciplina vinculada a este professor ainda.</p>
+    {% endif %}
+    <div class="form-actions">
+      <a href="{{ url_for('listar_disciplinas') }}" class="btn btn--ghost btn--small">Gerenciar disciplinas</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

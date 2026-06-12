@@ -1,0 +1,773 @@
+/* =====================================================================
+   SchoolCore — Sistema Integrado de Gestão Escolar
+   Tema visual: "Caderno de Registro Acadêmico"
+
+   Conceito: a interface remete a um caderno/livro de registro escolar —
+   papel pautado, linha de margem vermelha, tipografia serifada para
+   títulos (como um carimbo institucional) e selos/carimbos para status
+   acadêmicos (Aprovado / Reprovado / Ativo etc.).
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Paleta */
+  --paper: #fbf9f4;
+  --paper-deep: #f3efe6;
+  --rule: #d9e1ee;
+  --ink: #232c42;
+  --ink-soft: #56607c;
+  --margin: #bd5247;
+  --gold: #d8a13d;
+  --green: #4f7a52;
+  --red: #b3433b;
+  --muted: #97a0b5;
+  --white: #ffffff;
+
+  /* Tipografia */
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+
+  /* Layout */
+  --sidebar-w: 248px;
+  --radius: 6px;
+  --shadow: 0 1px 2px rgba(35, 44, 66, 0.06), 0 2px 8px rgba(35, 44, 66, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Layout geral
+   --------------------------------------------------------------------- */
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar -------------------------------------------------------------- */
+
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar__brand {
+  padding: 28px 24px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar__brand .mark {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  display: block;
+  line-height: 1.1;
+}
+
+.sidebar__brand .mark span {
+  color: var(--gold);
+}
+
+.sidebar__brand .sub {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar__nav {
+  list-style: none;
+  margin: 0;
+  padding: 14px 12px;
+  flex: 1;
+}
+
+.sidebar__nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14.5px;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  margin-bottom: 2px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar__nav a .idx {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+.sidebar__nav a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+}
+
+.sidebar__nav a.active {
+  background: rgba(216, 161, 61, 0.16);
+  color: var(--white);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.sidebar__foot {
+  padding: 16px 24px 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+}
+
+/* Conteúdo principal ----------------------------------------------------- */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 38px,
+    var(--rule) 38px,
+    var(--rule) 39px
+  );
+  background-position: 0 86px;
+}
+
+.main__inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 40px 64px 52px;
+  position: relative;
+}
+
+/* Linha de margem vermelha, como em folhas de caderno escolar */
+.main__inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 32px;
+  width: 1px;
+  background: var(--margin);
+  opacity: 0.45;
+}
+
+/* ---------------------------------------------------------------------
+   Topo de página
+   --------------------------------------------------------------------- */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.page-header__text .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--margin);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  max-width: 540px;
+}
+
+.page-header__actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Mensagens flash
+   --------------------------------------------------------------------- */
+
+.flash {
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flash::before {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.flash--sucesso {
+  background: #eef4ec;
+  color: var(--green);
+  border-color: #cfe2cb;
+}
+
+.flash--sucesso::before {
+  content: "OK";
+}
+
+.flash--erro {
+  background: #fbeceb;
+  color: var(--red);
+  border-color: #f1cfcb;
+}
+
+.flash--erro::before {
+  content: "!";
+}
+
+/* ---------------------------------------------------------------------
+   Cards
+   --------------------------------------------------------------------- */
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--paper-deep);
+  border-left: 4px solid var(--margin);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  margin-bottom: 22px;
+}
+
+.card__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.card h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin: 0 0 12px;
+}
+
+/* Grade de estatísticas (painel) */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--paper-deep);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gold);
+}
+
+.stat-card .stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-card .stat-value {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  margin-top: 6px;
+  line-height: 1;
+}
+
+.stat-card .stat-value small {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+/* Grade de duas colunas (painel / relatórios) */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Tabelas
+   --------------------------------------------------------------------- */
+
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--paper-deep);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--ink);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: var(--paper-deep);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.col-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------------
+   Selos / status (carimbos)
+   --------------------------------------------------------------------- */
+
+.stamp {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  transform: rotate(-2deg);
+}
+
+.stamp--ativo,
+.stamp--aprovado,
+.stamp--ativa {
+  color: var(--green);
+}
+
+.stamp--inativo,
+.stamp--reprovado,
+.stamp--cancelada,
+.stamp--reprovado-nota,
+.stamp--reprovado-frequencia,
+.stamp--reprovado-nota-e-frequencia {
+  color: var(--red);
+}
+
+.stamp--trancado,
+.stamp--sem-dados {
+  color: var(--gold);
+}
+
+.stamp--formado {
+  color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------------
+   Botões
+   --------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1.5px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--paper-deep);
+  opacity: 1;
+}
+
+.btn--danger {
+  background: transparent;
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn--danger:hover {
+  background: var(--red);
+  color: var(--white);
+  opacity: 1;
+}
+
+.btn--small {
+  padding: 6px 12px;
+  font-size: 12.5px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+form.inline {
+  display: inline;
+}
+
+/* ---------------------------------------------------------------------
+   Formulários
+   --------------------------------------------------------------------- */
+
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--paper-deep);
+  border-left: 4px solid var(--margin);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 28px;
+  max-width: 640px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.field input,
+.field select {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--ink);
+  padding: 9px 2px;
+  border: none;
+  border-bottom: 1.5px solid var(--rule);
+  background: transparent;
+  border-radius: 0;
+  transition: border-color 0.15s ease;
+}
+
+.field select {
+  padding: 9px 4px;
+}
+
+.field input:focus,
+.field select:focus {
+  border-bottom-color: var(--gold);
+  outline: none;
+}
+
+.field .hint {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.form-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Pequeno formulário inline para vincular professor em listas */
+.inline-form {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.inline-form select {
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 5px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper);
+}
+
+/* ---------------------------------------------------------------------
+   Estado vazio
+   --------------------------------------------------------------------- */
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ink-soft);
+}
+
+.empty-state .glyph {
+  font-family: var(--font-display);
+  font-size: 38px;
+  color: var(--margin);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------------------
+   Filtros (chips)
+   --------------------------------------------------------------------- */
+
+.chip-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 6px 14px;
+  transition: all 0.15s ease;
+}
+
+.chip.active,
+.chip:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------
+   Boletim
+   --------------------------------------------------------------------- */
+
+.boletim-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.boletim-head h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+
+.boletim-head .ficha-id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 6px 12px;
+  text-align: right;
+}
+
+/* ---------------------------------------------------------------------
+   Responsivo
+   --------------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+  }
+
+  .sidebar__brand {
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    white-space: nowrap;
+  }
+
+  .sidebar__nav {
+    display: flex;
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .sidebar__nav a {
+    white-space: nowrap;
+  }
+
+  .sidebar__foot {
+    display: none;
+  }
+
+  .main__inner {
+    padding: 24px 20px 48px 28px;
+  }
+
+  .main__inner::before {
+    left: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

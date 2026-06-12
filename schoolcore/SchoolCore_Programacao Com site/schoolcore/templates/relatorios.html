@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block titulo %}Relatórios{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 08</span>
+    <h1>Relatórios gerenciais</h1>
+    <p>Indicadores consolidados para apoiar a tomada de decisão da coordenação acadêmica.</p>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-label">Matrículas ativas</span>
+    <div class="stat-value">{{ total_matriculados }}</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Aprovados</span>
+    <div class="stat-value">{{ aprovacao.aprovados }}</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Reprovados</span>
+    <div class="stat-value">{{ aprovacao.reprovados }}</div>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Professores ativos</span>
+    <div class="stat-value">{{ professores_ativos | length }}</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <span class="card__label">Currículo</span>
+    <h2>Disciplinas mais ofertadas</h2>
+    {% if disciplinas_ofertadas %}
+      <table>
+        <thead>
+          <tr><th>Disciplina</th><th class="text-right">Turmas ofertadas</th></tr>
+        </thead>
+        <tbody>
+          {% for codigo, quantidade in disciplinas_ofertadas %}
+          <tr>
+            <td><span class="mono">{{ codigo }}</span>{% if nomes_disciplinas.get(codigo) %} — {{ nomes_disciplinas[codigo] }}{% endif %}</td>
+            <td class="text-right mono">{{ quantidade }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Nenhuma turma cadastrada ainda.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <span class="card__label">Frequência</span>
+    <h2>Frequência média por turma</h2>
+    {% if frequencia_por_turma %}
+      <table>
+        <thead>
+          <tr><th>Turma</th><th class="text-right">Frequência média</th></tr>
+        </thead>
+        <tbody>
+          {% for codigo, media in frequencia_por_turma %}
+          <tr>
+            <td class="mono">{{ codigo }}</td>
+            <td class="text-right mono">{{ media | percentual }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Nenhuma turma cadastrada ainda.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <span class="card__label">Corpo docente</span>
+    <h2>Professores ativos</h2>
+    <p class="muted" style="margin-top:-4px">Professores com ao menos uma disciplina vinculada.</p>
+    {% if professores_ativos %}
+      <table>
+        <thead>
+          <tr><th>Código</th><th>Nome</th><th class="text-right">Disciplinas</th></tr>
+        </thead>
+        <tbody>
+          {% for professor in professores_ativos %}
+          <tr>
+            <td class="mono">{{ professor.codigo_funcional }}</td>
+            <td>{{ professor.nome }}</td>
+            <td class="text-right mono">{{ professor.disciplinas_vinculadas | length }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Nenhum professor com disciplina vinculada ainda.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <span class="card__label">Desempenho</span>
+    <h2>Situação acadêmica consolidada</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>Aprovados</td>
+          <td class="text-right"><span class="stamp stamp--aprovado">Aprovado</span></td>
+          <td class="text-right mono">{{ aprovacao.aprovados }}</td>
+        </tr>
+        <tr>
+          <td>Reprovados (nota, frequência ou ambos)</td>
+          <td class="text-right"><span class="stamp stamp--reprovado">Reprovado</span></td>
+          <td class="text-right mono">{{ aprovacao.reprovados }}</td>
+        </tr>
+        <tr>
+          <td>Sem dados suficientes</td>
+          <td class="text-right"><span class="stamp stamp--sem-dados">Sem dados</span></td>
+          <td class="text-right mono">{{ aprovacao.sem_dados }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted" style="font-size:12.5px; margin-top:14px">
+      Critério: aprovado quando média ≥ 6,0 e frequência ≥ 75% na disciplina.
+    </p>
+  </div>
+</div>
+{% endblock %}

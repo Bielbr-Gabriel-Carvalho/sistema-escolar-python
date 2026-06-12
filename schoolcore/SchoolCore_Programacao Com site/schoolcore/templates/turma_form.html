@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block titulo %}Nova turma{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 05 · Turmas</span>
+    <h1>Nova turma</h1>
+    <p>Crie uma turma vinculada a uma disciplina já cadastrada, definindo o professor responsável e a capacidade de vagas.</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('listar_turmas') }}" class="btn btn--ghost">Voltar</a>
+  </div>
+</div>
+
+{% if not disciplinas %}
+<div class="card">
+  <div class="empty-state">
+    <span class="glyph">—</span>
+    <strong>Nenhuma disciplina cadastrada.</strong>
+    <p>Cadastre ao menos uma disciplina antes de criar uma turma.</p>
+  </div>
+  <div class="form-actions">
+    <a href="{{ url_for('nova_disciplina') }}" class="btn btn--small">Cadastrar disciplina</a>
+  </div>
+</div>
+{% else %}
+<div class="form-card">
+  <form method="post">
+    <div class="form-grid">
+      <div class="field">
+        <label for="codigo">Código da turma</label>
+        <input type="text" id="codigo" name="codigo" required placeholder="ex.: T2026-1-ENG101-A">
+      </div>
+      <div class="field">
+        <label for="capacidade">Capacidade de vagas</label>
+        <input type="number" id="capacidade" name="capacidade" min="1" required>
+      </div>
+
+      <div class="field">
+        <label for="disciplina_codigo">Disciplina</label>
+        <select id="disciplina_codigo" name="disciplina_codigo" required>
+          {% for disciplina in disciplinas %}
+            <option value="{{ disciplina.codigo }}">{{ disciplina.codigo }} — {{ disciplina.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="professor_codigo">Professor responsável</label>
+        <select id="professor_codigo" name="professor_codigo">
+          <option value="">— sem professor —</option>
+          {% for professor in professores %}
+            <option value="{{ professor.codigo_funcional }}">{{ professor.codigo_funcional }} — {{ professor.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn">Criar turma</button>
+      <a href="{{ url_for('listar_turmas') }}" class="btn btn--ghost">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

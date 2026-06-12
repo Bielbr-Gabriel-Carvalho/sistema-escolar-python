@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}SchoolCore{% endblock %} · SchoolCore</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <span class="mark">School<span>Core</span></span>
+        <span class="sub">Centro Educacional Horizonte do Saber</span>
+      </div>
+      <ul class="sidebar__nav">
+        <li><a href="{{ url_for('painel') }}" class="{{ 'active' if request.path == '/' else '' }}"><span class="idx">01</span> Painel</a></li>
+        <li><a href="{{ url_for('listar_alunos') }}" class="{{ 'active' if request.path.startswith('/alunos') else '' }}"><span class="idx">02</span> Alunos</a></li>
+        <li><a href="{{ url_for('listar_professores') }}" class="{{ 'active' if request.path.startswith('/professores') else '' }}"><span class="idx">03</span> Professores</a></li>
+        <li><a href="{{ url_for('listar_disciplinas') }}" class="{{ 'active' if request.path.startswith('/disciplinas') else '' }}"><span class="idx">04</span> Disciplinas</a></li>
+        <li><a href="{{ url_for('listar_turmas') }}" class="{{ 'active' if request.path.startswith('/turmas') else '' }}"><span class="idx">05</span> Turmas</a></li>
+        <li><a href="{{ url_for('listar_matriculas') }}" class="{{ 'active' if request.path.startswith('/matriculas') else '' }}"><span class="idx">06</span> Matrículas</a></li>
+        <li><a href="{{ url_for('academico') }}" class="{{ 'active' if request.path.startswith('/academico') else '' }}"><span class="idx">07</span> Acadêmico</a></li>
+        <li><a href="{{ url_for('relatorios') }}" class="{{ 'active' if request.path.startswith('/relatorios') else '' }}"><span class="idx">08</span> Relatórios</a></li>
+      </ul>
+      <div class="sidebar__foot">
+        SchoolCore v1.0<br>
+        Projeto Integrador — 2026.1<br>
+        Programação de Computadores
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="main__inner">
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+          {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+              <div class="flash flash--{{ categoria }}">{{ mensagem }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block conteudo %}{% endblock %}
+      </div>
+    </main>
+  </div>
+</body>
+</html>

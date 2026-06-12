@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block titulo %}Turmas{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 05</span>
+    <h1>Gestão de turmas</h1>
+    <p>Criação de turmas vinculadas a disciplinas e professores, com controle automático de vagas disponíveis.</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('nova_turma') }}" class="btn">+ Nova turma</a>
+  </div>
+</div>
+
+{% if turmas %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Disciplina</th>
+        <th>Professor</th>
+        <th class="text-right">Vagas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for turma in turmas %}
+      <tr>
+        <td class="mono">{{ turma.codigo }}</td>
+        <td>
+          <span class="mono">{{ turma.disciplina_codigo }}</span>
+          {% if nomes_disciplinas.get(turma.disciplina_codigo) %} — {{ nomes_disciplinas[turma.disciplina_codigo] }}{% endif %}
+        </td>
+        <td>
+          {% if turma.professor_codigo %}
+            <span class="mono">{{ turma.professor_codigo }}</span>
+            {% if nomes_professores.get(turma.professor_codigo) %} — {{ nomes_professores[turma.professor_codigo] }}{% endif %}
+          {% else %}
+            <span class="muted">não definido</span>
+          {% endif %}
+        </td>
+        <td class="text-right mono">{{ turma.alunos_matriculados | length }} / {{ turma.capacidade }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card">
+  <div class="empty-state">
+    <span class="glyph">—</span>
+    <strong>Nenhuma turma cadastrada ainda.</strong>
+    <p>Crie a primeira turma para liberar matrículas de alunos.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

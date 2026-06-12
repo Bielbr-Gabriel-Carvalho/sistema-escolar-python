@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block titulo %}{{ aluno.nome }}{% endblock %}
+
+{% block conteudo %}
+<div class="page-header">
+  <div class="page-header__text">
+    <span class="eyebrow">Módulo 02 · Ficha do aluno</span>
+    <h1>{{ aluno.nome }}</h1>
+    <p>Matrícula <span class="mono">{{ aluno.matricula }}</span> · {{ aluno.curso }} · {{ aluno.periodo }}º período</p>
+  </div>
+  <div class="page-header__actions">
+    <a href="{{ url_for('editar_aluno', matricula=aluno.matricula) }}" class="btn btn--ghost">Editar</a>
+    <a href="{{ url_for('listar_alunos') }}" class="btn btn--ghost">Voltar</a>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <span class="card__label">Dados cadastrais</span>
+    <h2>Identificação</h2>
+    <table>
+      <tbody>
+        <tr><td class="muted">CPF</td><td class="mono">{{ aluno.cpf }}</td></tr>
+        <tr><td class="muted">Data de nascimento</td><td class="mono">{{ aluno.data_nascimento }}</td></tr>
+        <tr><td class="muted">E-mail</td><td>{{ aluno.email or '—' }}</td></tr>
+        <tr><td class="muted">Curso</td><td>{{ aluno.curso }}</td></tr>
+        <tr><td class="muted">Período</td><td>{{ aluno.periodo }}</td></tr>
+        <tr><td class="muted">Status</td><td><span class="stamp stamp--{{ aluno.status_academico }}">{{ aluno.status_academico }}</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="card__label">Módulo de matrículas</span>
+    <h2>Histórico de matrículas</h2>
+    {% if historico %}
+      <table>
+        <thead>
+          <tr><th>#</th><th>Turma</th><th>Data</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for m in historico %}
+          <tr>
+            <td class="mono">{{ m.id }}</td>
+            <td class="mono">{{ m.codigo_turma }}</td>
+            <td class="mono">{{ m.data_matricula }}</td>
+            <td><span class="stamp stamp--{{ m.status }}">{{ m.status }}</span></td>
+            <td class="col-actions">
+              {% if m.esta_ativa() %}
+              <form class="inline" method="post" action="{{ url_for('cancelar_matricula', id_matricula=m.id) }}">
+                <button type="submit" class="btn btn--danger btn--small">Cancelar</button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Este aluno ainda não possui matrículas registradas.</p>
+    {% endif %}
+    <div class="form-actions">
+      <a href="{{ url_for('listar_matriculas') }}" class="btn btn--ghost btn--small">Nova matrícula</a>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <span class="card__label">Módulo acadêmico</span>
+  <h2>Boletim</h2>
+  {% if boletim.disciplinas %}
+    <table>
+      <thead>
+        <tr>
+          <th>Disciplina</th>
+          <th class="text-right">Média</th>
+          <th class="text-right">Frequência</th>
+          <th class="col-actions">Situação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in boletim.disciplinas %}
+        <tr>
+          <td>
+            <span class="mono">{{ item.codigo_disciplina }}</span> — {{ item.nome_disciplina }}
+          </td>
+          <td class="text-right mono">{{ item.media | numero }}</td>
+          <td class="text-right mono">{{ item.frequencia | percentual }}</td>
+          <td class="col-actions">
+            <span class="stamp stamp--{{ item.situacao | situacao_slug }}">
+              {{ item.situacao }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="muted">Nenhuma nota ou frequência registrada para este aluno ainda.</p>
+  {% endif %}
+  <div class="form-actions">
+    <a href="{{ url_for('academico') }}" class="btn btn--ghost btn--small">Lançar notas / frequência</a>
+  </div>
+</div>
+{% endblock %}
