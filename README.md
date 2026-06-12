@@ -1,4 +1,4 @@
-# SchoolCore
+# SchoolCore 
 
 Sistema acadêmico desenvolvido em **Python**, utilizando **Programação
 Orientada a Objetos**, no contexto do Projeto Integrador SchoolCore
@@ -15,21 +15,24 @@ solicitação do cliente do projeto SchoolCore.
 
 ```
 schoolcore/
-├── main.py                # Interface de linha de comando (menu principal)
-├── sistema.py              # Classe SistemaSchoolCore (regras de negócio)
-├── persistencia.py          # Persistência dos dados em arquivos JSON
-├── excecoes.py              # Exceções customizadas do sistema
-├── utils.py                 # Funções utilitárias (validação de CPF, e-mail, etc.)
-├── testes_sistema.py        # Script de testes automatizados de demonstração
+├── app.py                  # Aplicação web (Flask) — site completo
+├── main.py                  # Interface de linha de comando (menu principal)
+├── sistema.py                # Classe SistemaSchoolCore (regras de negócio)
+├── persistencia.py            # Persistência dos dados em arquivos JSON
+├── excecoes.py                # Exceções customizadas do sistema
+├── utils.py                    # Funções utilitárias (validação de CPF, e-mail, etc.)
+├── testes_sistema.py            # Script de testes automatizados de demonstração
 ├── modelos/
 │   ├── __init__.py
-│   ├── usuario.py            # Classe base Usuario (herança)
-│   ├── aluno.py               # Classe Aluno (notas, frequência, boletim)
-│   ├── professor.py           # Classe Professor
-│   ├── disciplina.py          # Classe Disciplina
-│   ├── turma.py                # Classe Turma (controle de vagas)
-│   └── matricula.py            # Classe Matricula
-└── dados/                     # Gerado automaticamente: arquivos JSON persistidos
+│   ├── usuario.py                # Classe base Usuario (herança)
+│   ├── aluno.py                   # Classe Aluno (notas, frequência, boletim)
+│   ├── professor.py               # Classe Professor
+│   ├── disciplina.py              # Classe Disciplina
+│   ├── turma.py                    # Classe Turma (controle de vagas)
+│   └── matricula.py                # Classe Matricula
+├── templates/                    # Páginas HTML (Jinja2) do site
+├── static/css/style.css           # Estilo visual do site
+└── dados/                          # Gerado automaticamente: arquivos JSON persistidos
 ```
 
 ## 3. Conceitos de Orientação a Objetos aplicados
@@ -82,7 +85,11 @@ média por turma.
 
 ## 5. Como executar
 
-Requisitos: **Python 3.10+** (não são necessárias bibliotecas externas).
+Requisitos: **Python 3.10+**.
+
+### 5.1 Versão em linha de comando (terminal)
+
+Não são necessárias bibliotecas externas.
 
 ```bash
 cd schoolcore
@@ -94,6 +101,39 @@ Para executar os testes automatizados de demonstração:
 ```bash
 python testes_sistema.py
 ```
+
+### 5.2 Versão web (site)
+
+A interface web foi construída com **Flask** e reaproveita integralmente
+as classes e regras de negócio de `sistema.py` e `modelos/` — é a mesma
+lógica do sistema em linha de comando, apenas com uma camada visual.
+
+1. Instale o Flask (uma única vez):
+
+   ```bash
+   pip install flask
+   ```
+
+   Caso apareça um erro de ambiente gerenciado externamente, use:
+
+   ```bash
+   pip install flask --break-system-packages
+   ```
+
+2. Execute o servidor:
+
+   ```bash
+   cd schoolcore
+   python app.py
+   ```
+
+3. Abra o navegador em **http://127.0.0.1:5000**.
+
+A interface web possui 8 módulos navegáveis pela barra lateral: Painel,
+Alunos, Professores, Disciplinas, Turmas, Matrículas, Acadêmico (notas,
+frequência e boletim) e Relatórios. Todos os dados são salvos
+automaticamente na pasta `dados/` (mesmos arquivos JSON utilizados pela
+versão em terminal — é possível alternar entre as duas versões livremente).
 
 ## 6. Regras de negócio principais
 
@@ -118,3 +158,7 @@ python testes_sistema.py
   classes de `sistema.py` e `modelos/`.
 - Implementação de autenticação de usuários (login/senha) para os
   diferentes perfis (secretaria, professores, coordenação).
+
+  # isso e o meu primeiro site e sistema complexo que criei
+  
+
