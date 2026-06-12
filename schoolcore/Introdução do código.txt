@@ -1,0 +1,19 @@
+A pasta schoolcore/Trabalho contém:
+
+main.py → o programa principal, com o menu que você usa
+
+sistema.py → toda a lógica/regras de negócio
+
+persistencia.py → salva e carrega os dados em JSON
+
+excecoes.py → os erros personalizados do sistema
+
+utils.py → funções de validação (CPF, e-mail, etc.)
+
+testes_sistema.py → um script que testa tudo automaticamente
+
+modelos/ → pasta com as classes Aluno, Professor, Disciplina, Turma, Matricula, Usuário
+
+dados/ → pasta vazia onde os arquivos JSON serão criados quando você usar o sistema
+
+README.md → explicação do projeto
